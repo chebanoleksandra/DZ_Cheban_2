@@ -10,6 +10,8 @@ class Human:
         self.money = 100
         self.gladness = 50
         self.satiety = 50
+        self.book = Book(books_list)
+
 
     def get_home(self):
         self.home = House()
@@ -63,7 +65,7 @@ class Human:
         if manage == 'fuel':
             print('I bought fuel')
             self.money -= 50
-            self.car.drive += 50
+            self.car.fuel += 50
         elif manage == 'food':
             print('I bought food')
             self.money -= 25
@@ -86,6 +88,12 @@ class Human:
         self.car.strength += 100
         self.money -= 50
 
+    def read(self):
+        print(f'I am reading {self.book.title} by {self.book.author}')
+        self.gladness += 5
+        self.home.mess += 2
+        self.money -= 10
+
     def days_indexes(self, day):
         day = f"Today is the {day} day of {self.name}'s life"
         print('\n', f'{day:=^50}', '\n')
@@ -102,6 +110,10 @@ class Human:
         print(f"{car_indexes:^50}", '\n')
         print(f'Fuel = {self.car.fuel}')
         print(f'Strength = {self.car.strength}')
+        book_indexes = 'Book indexes'
+        print(f"{book_indexes:^50}", '\n')
+        print(f'Book title is {self.book.title}')
+        print(f'The author is {self.book.author}')
 
     def is_alive(self):
         if self.gladness < 0:
@@ -128,7 +140,7 @@ class Human:
             print(f"I don't have a job, I'm going to get a job of {self.job.job}, salary {self.job.salary}")
         self.days_indexes(day)
 
-        dice = random.randint(1, 4)
+        dice = random.randint(1, 5)
         if dice == 1:
             self.eat()
         if dice == 2:
@@ -137,6 +149,8 @@ class Human:
             self.shopping('food')
         if dice == 4:
             self.chill()
+        if dice == 5:
+            self.read()
         if self.satiety < 20:
             print("I'll go to eat")
             self.eat()
@@ -184,6 +198,14 @@ class Job:
         self.gladness_less = job_list[self.job]['gladness_less']
 
 
+class Book:
+    def __init__(self, books_list):
+        self.book = random.choice(list(books_list))
+        self.title = books_list[self.book]['title']
+        self.author = books_list[self.book]['author']
+
+
+
 brand_of_car = {'BMW': {'fuel': 100, 'strength': 100, 'consumption': 6},
                 'Lada': {'fuel': 50, 'strength': 40, 'consumption': 10},
                 'Volvo': {'fuel': 70, 'strength': 150, 'consumption': 8},
@@ -193,6 +215,10 @@ job_list = {'Java developer': {'salary': 50, 'gladness_less': 10},
             'Python developer': {'salary': 40, 'gladness_less': 15},
             'C++ developer': {'salary': 55, 'gladness_less': 25},
             'Rust developer': {'salary': 70, 'gladness_less': 1}}
+
+books_list = {'Little Women': {'title': 'Little Women', 'author': 'Louisa May Alcott'},
+              'Harry Potter': {'title': 'Harry Potter', 'author': 'JK Rowling'},
+              'The portrait of dorian grey': {'title': 'The portrait of dorian grey', 'author': 'Oscar Wilde'}}
 
 luz = Human('Luz')
 
